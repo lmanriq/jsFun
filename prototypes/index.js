@@ -1246,7 +1246,7 @@ const dinosaurPrompts = {
     // film. The keys of the humans array are mapped so that the key name is now
     // the value of the name property for the new object. The ages key is assigned
     // to the value of the findAges function. That array of objects is then
-    // filtered to get rid of the actors who weren't in any films. 
+    // filtered to get rid of the actors who weren't in any films.
   }
 };
 
