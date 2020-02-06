@@ -660,17 +660,22 @@ const scope = {
   },
 
   exerciseQ(){
+    const kids = [];
+
     let myKid = 'Pandora';
     let wildKids = ['Antigone'];
 
-    let myCrazyKidAntics = kid => {
+    let myCrazyKidAntics = (kid) => {
       // Log A: kid
-      wildKids.push(kid);
+      console.log(wildKids);
+      kids.push({A: kid});
+      wildKids.push('pandora');
       // Log B: wildKids
-
+      kids.push({B: wildKids});
       let drawOnTheWall = () => {
         let myKid = 'Mandy';
         // Log C: myKid
+        kids.push({C: myKid});
         return `That wild kid ${myKid}, drew on the wall!`;
       };
 
@@ -679,21 +684,33 @@ const scope = {
       let myAmazingKid = () => {
         let myKid = wildKids.shift();
         // Log D: myKid
+        kids.push({D: myKid});
         return `That kid ${myKid}, is AMAZING!`;
       };
 
       myAmazingKid();
       // Log E: myKid;
+      kids.push({E: myKid});
       return `All these kids are wild, especially, ${myKid}!`;
     };
 
     myCrazyKidAntics(myKid);
-
-    const result = 'REPLACE WITH YOUR RESULT HERE';
-    return result;
+    console.log(kids);
+    return kids;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // After the variables are declared and assigned on 665 and 666, the first
+    // function that runs is myCrazyKidAntics. We then go into that funct's scope
+    // where the myKid ('Pandora') variable is used as an argument. Pandora is then
+    // pushed with the A key. Next, we push that variable into the wild kids array,
+    // so that is now equal to ['Antigone', 'Pandora'] and is pushed with the B key.
+    // Next drawOnTheWall is invoked within the antics function and myKid is re-
+    // assigned to 'Mandy' which is then pushed with C. myAmazingKid is invoked
+    // next and myKid is redeclared and assigned within that function's scope
+    // to the first value shifted off of wildKids ('Antigone'). That is then pushed
+    // with the D key on 686. We go back into the parent antics function where
+    // myKid is pushed with E. It is still 'Pandora' in this context since whenever
+    // it was assigned in the functions it was also redeclared.
   },
 
   exerciseR() {
