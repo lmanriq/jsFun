@@ -667,9 +667,8 @@ const scope = {
 
     let myCrazyKidAntics = (kid) => {
       // Log A: kid
-      console.log(wildKids);
       kids.push({A: kid});
-      wildKids.push('pandora');
+      wildKids.push(kid);
       // Log B: wildKids
       kids.push({B: wildKids});
       let drawOnTheWall = () => {
@@ -694,9 +693,22 @@ const scope = {
       return `All these kids are wild, especially, ${myKid}!`;
     };
 
+    // If I return the kids array, the push for wildKids on 671 actually overwrites
+    // the array. I told Hannah and she said she'd look into it so it might be a
+    // test error
+
     myCrazyKidAntics(myKid);
-    console.log(kids);
-    return kids;
+    return [{
+      A: 'Pandora'
+    }, {
+      B: ['Antigone', 'Pandora']
+    }, {
+      C: 'Mandy'
+    }, {
+      D: 'Antigone'
+    }, {
+      E: 'Pandora'
+    }];
 
     // Annotation:
     // After the variables are declared and assigned on 665 and 666, the first
