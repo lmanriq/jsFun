@@ -107,16 +107,31 @@ const clubPrompts = {
     //   ...etc
     // }
 
-    let memberClubs = {};
-    clubs.forEach(club => {
+    // solution # 2
+
+    const memberClubs = clubs.reduce((acc, club) => {
       club.members.forEach(member => {
-        if (!memberClubs[member]) {
-          memberClubs[member] = [club.club]
+        if (!acc[member]) {
+          acc[member] = [club.club]
         } else {
-          memberClubs[member].push(club.club);
+          acc[member].push(club.club);
         }
       })
-    })
+      return acc;
+    }, {})
+
+    // solution # 1
+
+    // let memberClubs = {};
+    // clubs.forEach(club => {
+    //   club.members.forEach(member => {
+    //     if (!memberClubs[member]) {
+    //       memberClubs[member] = [club.club]
+    //     } else {
+    //       memberClubs[member].push(club.club);
+    //     }
+    //   })
+    // })
     return memberClubs;
 
     // Annotation:
@@ -261,14 +276,28 @@ const cakePrompts = {
     // every cake in the dataset e.g.
     // ['dutch process cocoa', 'toasted sugar', 'smoked sea salt', 'berries', ..etc]
 
-    let allToppings = [];
-    cakes.forEach(cake => {
+    // solution 2
+
+    const allToppings = cakes.reduce((acc, cake) => {
       cake.toppings.forEach(topping => {
-        if (allToppings.indexOf(topping) === -1) {
-          allToppings.push(topping);
+        if (!acc.includes(topping)) {
+          acc.push(topping);
         }
       })
-    })
+      return acc;
+    }, []);
+
+    // solution 1
+
+    // let allToppings = [];
+    // cakes.forEach(cake => {
+    //   cake.toppings.forEach(topping => {
+    //     if (allToppings.indexOf(topping) === -1) {
+    //       allToppings.push(topping);
+    //     }
+    //   });
+    // });
+
     return allToppings;
 
     // Annotation:
@@ -288,16 +317,32 @@ const cakePrompts = {
     //    ...etc
     // }
 
-    let groceryList = {};
-    cakes.forEach(cake => {
+    // solution 2
+
+    const groceryList = cakes.reduce((acc, cake) => {
       cake.toppings.forEach(topping => {
-        if (!groceryList[topping]) {
-          groceryList[topping] = 1;
+        if (!acc[topping]) {
+          acc[topping] = 1;
         } else {
-          groceryList[topping] += 1;
+          acc[topping] += 1;
         }
       })
-    })
+      return acc;
+    }, {});
+
+    //solution 1
+
+    // let groceryList = {};
+    // cakes.forEach(cake => {
+    //   cake.toppings.forEach(topping => {
+    //     if (!groceryList[topping]) {
+    //       groceryList[topping] = 1;
+    //     } else {
+    //       groceryList[topping] += 1;
+    //     }
+    //   })
+    // })
+
     return groceryList;
     // Annotation:
     // We want to create a new groceryList object and return that object with
@@ -352,7 +397,9 @@ const classPrompts = {
     //   feCapacity: 110,
     //   beCapacity: 96
     // }
-    const totalCapacity = {}
+
+    // solution 1
+
     const findCapacity = (program) => {
       let capacity = classrooms.reduce((acc, room) => {
         if (room.program === program) {
@@ -363,8 +410,10 @@ const classPrompts = {
       return capacity;
     }
 
-    totalCapacity.feCapacity = findCapacity('FE');
-    totalCapacity.beCapacity = findCapacity('BE');
+    const totalCapacity = {
+      feCapacity: findCapacity('FE'),
+      beCapacity: findCapacity('BE')
+    }
 
     return totalCapacity;
 
@@ -740,16 +789,31 @@ const turingPrompts = {
     // cohort1806: 9,
     // cohort1804: 10.5
     // }
+
+    // solution 2
+
     const findTeachers = (mod) => {
       const teachers = instructors.filter(instr => instr.module === mod);
       return teachers.length;
-    }
-    const numberOfTeachers = [findTeachers(1), findTeachers(2), findTeachers(3),
-    findTeachers(4)]
-    const studentsPerTeacher = {};
-    cohorts.forEach((cohort, indx) => {
-      studentsPerTeacher['cohort' + cohort.cohort] = cohort.studentCount / numberOfTeachers[indx];
-    })
+    };
+    const studentsPerTeacher = cohorts.reduce((acc, cohort, idx) => {
+      acc['cohort' + cohort.cohort] = cohort.studentCount / findTeachers(idx + 1);
+      return acc;
+    }, {});
+
+    //solution 1
+
+    // const findTeachers = (mod) => {
+    //   const teachers = instructors.filter(instr => instr.module === mod);
+    //   return teachers.length;
+    // }
+    // const numberOfTeachers = [findTeachers(1), findTeachers(2), findTeachers(3),
+    // findTeachers(4)]
+    // const studentsPerTeacher = {};
+    // cohorts.forEach((cohort, indx) => {
+    //   studentsPerTeacher['cohort' + cohort.cohort] = cohort.studentCount / numberOfTeachers[indx];
+    // })
+
     return studentsPerTeacher;
     // Annotation:
     // First, we need to find how many teachers there are per mod. I wrote a reusable
@@ -775,18 +839,36 @@ const turingPrompts = {
     //     Will: [1, 2, 3, 4]
     //   }
 
-    const teacherMods = {}
-    instructors.forEach(instructor => {
-      teacherMods[instructor.name] = [];
+    // solution 2
+
+    const teacherMods = instructors.reduce((acc, inst) => {
+      acc[inst.name] = [];
       cohorts.forEach(cohort => {
         cohort.curriculum.forEach(subj => {
-          if (instructor.teaches.includes(subj) &&
-          teacherMods[instructor.name].indexOf(cohort.module) === -1) {
-            teacherMods[instructor.name].push(cohort.module)
+          if (inst.teaches.includes(subj) &&
+          acc[inst.name].indexOf(cohort.module) === -1) {
+            acc[inst.name].push(cohort.module)
           }
         })
       })
-    })
+      return acc;
+    }, {})
+
+    // solution 1
+
+    // const teacherMods = {}
+    // instructors.forEach(instructor => {
+    //   teacherMods[instructor.name] = [];
+    //   cohorts.forEach(cohort => {
+    //     cohort.curriculum.forEach(subj => {
+    //       if (instructor.teaches.includes(subj) &&
+    //       teacherMods[instructor.name].indexOf(cohort.module) === -1) {
+    //         teacherMods[instructor.name].push(cohort.module)
+    //       }
+    //     })
+    //   })
+    // })
+
     return teacherMods
 
 
@@ -808,16 +890,32 @@ const turingPrompts = {
     //   recursion: [ 'Pam', 'Leta' ]
     // }
 
-    const subjects = {};
-    instructors.forEach(instructor => {
-      instructor.teaches.forEach(subj => {
-        if (!subjects[subj]) {
-          subjects[subj] = [instructor.name]
+    // solution 2
+
+    subjects = instructors.reduce((acc, inst) => {
+      inst.teaches.forEach(subj => {
+        if (!acc[subj]) {
+          acc[subj] = [inst.name]
         } else {
-          subjects[subj].push(instructor.name)
+          acc[subj].push(inst.name)
         }
       })
-    })
+      return acc;
+    }, {})
+
+    // solution 1
+
+    // const subjects = {};
+    // instructors.forEach(instructor => {
+    //   instructor.teaches.forEach(subj => {
+    //     if (!subjects[subj]) {
+    //       subjects[subj] = [instructor.name]
+    //     } else {
+    //       subjects[subj].push(instructor.name)
+    //     }
+    //   })
+    // })
+
     return subjects;
     // Annotation:
     // First, I created an empty object. Then I cycled through all of the instructors
@@ -937,14 +1035,28 @@ const astronomyPrompts = {
     //   red: [{obj}]
     // }
 
-    const colors = {};
-    stars.forEach(star => {
-      if (!colors[star.color]) {
-        colors[star.color] = [star];
+    // solution 2
+
+    const colors = stars.reduce((acc, star) => {
+      if (!acc[star.color]) {
+        acc[star.color] = [star];
       } else {
-        colors[star.color].push(star);
+        acc[star.color].push(star);
       }
-    })
+      return acc;
+    }, {})
+
+    // solution 1
+
+    // const colors = {};
+    // stars.forEach(star => {
+    //   if (!colors[star.color]) {
+    //     colors[star.color] = [star];
+    //   } else {
+    //     colors[star.color].push(star);
+    //   }
+    // });
+
     return colors;
     // Annotation:
     // First, I created an empty object. Then I looped through the stars array
@@ -1075,16 +1187,32 @@ const dinosaurPrompts = {
     //   'Jurassic World: Fallen Kingdom': 18
     // }
 
-    const awesome = {};
-    movies.forEach(movie => {
+    // solution 2
+
+    const awesome = movies.reduce((acc, movie) => {
       let awesomeCount = 0;
       movie.dinos.forEach(dino => {
         if (dinosaurs[dino].isAwesome) {
           awesomeCount += 1;
         }
       })
-      awesome[movie.title] = awesomeCount;
-    })
+      acc[movie.title] = awesomeCount;
+      return acc;
+    }, {})
+
+    // solution 1
+
+    // const awesome = {};
+    // movies.forEach(movie => {
+    //   let awesomeCount = 0;
+    //   movie.dinos.forEach(dino => {
+    //     if (dinosaurs[dino].isAwesome) {
+    //       awesomeCount += 1;
+    //     }
+    //   })
+    //   awesome[movie.title] = awesomeCount;
+    // });
+
     return awesome;
     // Annotation:
     // First, we want to create an empty object. Then we want to cycle through
@@ -1118,7 +1246,8 @@ const dinosaurPrompts = {
           }
       }
     */
-    const avAges = {};
+
+    // solution 2
     const findAvgAge = (film) => {
       let avg = film.cast.reduce((acc, actor) => {
         acc += film.yearReleased - humans[actor].yearBorn;
@@ -1127,15 +1256,38 @@ const dinosaurPrompts = {
       avg = avg / film.cast.length;
       return Math.floor(avg);
     }
-    movies.forEach(movie => {
-      if (!avAges[movie.director]) {
-        avAges[movie.director] = {
+    const avAges = movies.reduce((acc, movie) => {
+      if (!acc[movie.director]) {
+        acc[movie.director] = {
           [movie.title]: findAvgAge(movie)
         }
       } else {
-        avAges[movie.director][movie.title] = findAvgAge(movie);
+        acc[movie.director][movie.title] = findAvgAge(movie);
       }
-    })
+      return acc;
+    }, {});
+
+    // solution 1
+
+    // const avAges = {};
+    // const findAvgAge = (film) => {
+    //   let avg = film.cast.reduce((acc, actor) => {
+    //     acc += film.yearReleased - humans[actor].yearBorn;
+    //     return acc;
+    //   }, 0)
+    //   avg = avg / film.cast.length;
+    //   return Math.floor(avg);
+    // }
+    // movies.forEach(movie => {
+    //   if (!avAges[movie.director]) {
+    //     avAges[movie.director] = {
+    //       [movie.title]: findAvgAge(movie)
+    //     }
+    //   } else {
+    //     avAges[movie.director][movie.title] = findAvgAge(movie);
+    //   }
+    // });
+
     return avAges;
 
     // Annotation:
