@@ -559,7 +559,7 @@ const weatherPrompts = {
     // pertains to using find.
 
   }
-}
+};
 
 // ---------------------------------------------------------------------------
 // ---------------------------------------------------------------------------
@@ -646,7 +646,7 @@ const nationalParksPrompts = {
     // if they already exist in our activities array. If they don't, we need to
     // push them to that array. If they don't, we ignore that activity.
   }
-}
+};
 
 
 

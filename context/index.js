@@ -215,11 +215,11 @@ const context = {
 
   exerciseK() {
     var store = {
-      fruit: "grapes",
+      fruit: 'grapes',
       sellMe: function() {
         return this.fruit;
       }
-    }
+    };
 
     // What is the value of `this` when we call store.sellMe()?
     return 'store';
@@ -238,7 +238,7 @@ const context = {
 
         setTimeout(function() {
           console.log('Your dog is a ' + _this.breed);
-        })
+        });
       }
     };
 
@@ -254,12 +254,12 @@ const context = {
     const robert = {
       name: 'Bobo',
       occupation: 'instructor'
-    }
+    };
 
     const william = {
       name: 'will',
       occupation: 'instructor'
-    }
+    };
 
     function makeBirdNoise() {
       console.log('My name is ' + this.name + ' ... caw! caw!');
@@ -282,7 +282,7 @@ const context = {
       }
 
       delayNoise() {
-        setTimeout(this.makeNoise.bind(this), 1000)
+        setTimeout(this.makeNoise.bind(this), 1000);
       }
 
       makeNoise() {
@@ -303,7 +303,7 @@ const context = {
   },
 
   exerciseO() {
-    const button = document.querySelector('#submit');
+    const button = document.getElementById('submit');
 
     button.addEventListener('click', () => {
       console.log(this);
@@ -325,7 +325,7 @@ const context = {
       scream: () => {
         this.totalScreams++;
       }
-    }
+    };
 
     return 'global window object'
 
